@@ -2,19 +2,24 @@ import React, { useRef } from "react";
 import { StatusBar } from 'expo-status-bar';
 import { Button, StyleSheet, Text, View, ScrollView, Image, Animated, Dimensions, PanResponder } from 'react-native';
 import NativeCards from "./NativeCards";
+import GestureHandlerCards from "./GestureHandlerCards";
+import SwipeableCards from "./SwipeableCards";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 
 export default function App() {
   return (
-    <View style={{ flex: 1 }}>
+    <GestureHandlerRootView style={styles.container}>
       <StatusBar style="auto" />
       <View style={{ height: 30 }}>
       </View>
       <Text style={styles.appTitle}>Rinder</Text>
-      <NativeCards />
+      {/* <NativeCards /> */}
+      <GestureHandlerCards />
+      {/* <SwipeableCards /> */}
       <View style={{ height: 60 }}>
       </View>
-    </View>
+    </GestureHandlerRootView>
   );
 }
 
