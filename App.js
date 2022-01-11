@@ -1,41 +1,49 @@
-import React, { useRef } from "react";
-import { StatusBar } from 'expo-status-bar';
-import { Button, StyleSheet, Text, View, ScrollView, Image, Animated, Dimensions, PanResponder } from 'react-native';
-import NativeCards from "./NativeCards";
-import GestureHandlerCards from "./GestureHandlerCards";
-import SwipeableCards from "./SwipeableCards";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
+import React from "react";
+import { Platform, SafeAreaView, StatusBar, StyleSheet, Text, View } from 'react-native';
+import Cards from './src/Cards';
 
 
 export default function App() {
   return (
-    <GestureHandlerRootView style={styles.container}>
-      <StatusBar style="auto" />
-      <View style={{ height: 30 }}>
+    <SafeAreaView style={styles.app}>
+      <View style={styles.header}>
+        <Text style={styles.title}>Rinder</Text>
       </View>
-      <Text style={styles.appTitle}>Rinder</Text>
-      {/* <NativeCards /> */}
-      <GestureHandlerCards />
-      {/* <SwipeableCards /> */}
-      <View style={{ height: 60 }}>
+      <View style={styles.cardContainer}>
+        <Cards />
       </View>
-    </GestureHandlerRootView>
+      <View style={styles.footer}>
+      </View>
+      <ExpoStatusBar style="auto" />
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  app: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    // backgroundColor: '#fff',
+    // alignItems: 'center',
+    // justifyContent: 'center',
   },
-  appTitle: {
+  header: {
+    height: 50
+  },
+  footer: {
+    height: 50
+  },
+  title: {
     color: "red",
     fontSize: 34,
     textAlign: "center",
     fontStyle: "italic",
     fontWeight: "bold",
     fontFamily: "serif"
+  },
+  cardContainer: {
+    flex: 1,
+    overflow: "hidden"
   }
 });
