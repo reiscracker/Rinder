@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
 });
 
 Button.propTypes = {
-    onPress: PropTypes.func,
-    title: PropTypes.string,
-    style: PropTypes.oneOf(["primary", "secondary"])
+    onPress: PropTypes.func.isRequired,
+    title: PropTypes.string.isRequired,
+    style: PropTypes.oneOf(["primary", "secondary"]).isRequired
 }

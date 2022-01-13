@@ -1,14 +1,15 @@
 import React, { useRef, useState } from "react";
-import { Animated, Button, Image, PanResponder, StyleSheet, Text, useWindowDimensions, View } from "react-native";
+import { Animated, Easing, Button, Image, PanResponder, StyleSheet, Text, useWindowDimensions, View } from "react-native";
 import EndCard from "./EndCard";
+import ItsAMatch from "./ItsAMatch";
 
 
 const profiles = [
-    // { name: "Steak", tags: ["zart", "kross", "medium"], image: require("../assets/profiles/steak.jpg") },
-    // { name: "Braten", tags: ["fett", "kräftig"], image: require("../assets/profiles/braten.jpg") },
-    // { name: "Hack", tags: ["fein", "frisch"], image: require("../assets/profiles/hack.jpg") },
-    // { name: "Merguez", tags: ["würzig", "scharf"], image: require("../assets/profiles/merguez.jpg") },
-    { name: "TBone", tags: ["fett"], image: require("../assets/profiles/tbone.jpg") },
+    { name: "Steak", tags: ["zart", "blutig", "roh"], image: require("../assets/profiles/steak.jpg") },
+    { name: "Braten", tags: ["fett", "kräftig"], image: require("../assets/profiles/braten.jpg") },
+    { name: "Hack", tags: ["fein", "frisch"], image: require("../assets/profiles/hack.jpg") },
+    { name: "Merguez", tags: ["würzig", "scharf"], image: require("../assets/profiles/merguez.jpg") },
+    { name: "TBone", tags: ["fett", "medium"], image: require("../assets/profiles/tbone.jpg") },
 ];
 
 
@@ -16,11 +17,11 @@ export default function Cards() {
     const [currentProfileIndex, setCurrentProfileIndex] = useState(0);
     const position = useRef(new Animated.ValueXY()).current;
     const tapStartPosition = useRef(new Animated.ValueXY()).current;
+    const itsAMatchOpacity = useRef(new Animated.Value(0)).current;
     const currentProfile = profiles[currentProfileIndex];
     const hasNextProfile = currentProfileIndex < profiles.length - 1;
     const nextProfile = hasNextProfile ? profiles[currentProfileIndex + 1] : null;
 
-    const ANIMATION_TIMING = 350;
     const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = useWindowDimensions();
 
     const panResponder = PanResponder.create({
@@ -34,17 +35,26 @@ export default function Cards() {
         onPanResponderRelease: (event, gestureState) => {
             if (gestureState.dx > 200) {
                 Animated.timing(position, {
-                    toValue: { x: SCREEN_WIDTH + 100, y: gestureState.dy + gestureState.vy * ANIMATION_TIMING },
-                    duration: ANIMATION_TIMING,
+                    toValue: { x: SCREEN_WIDTH + 100, y: gestureState.dy * 2 },
+                    duration: 200,
                     useNativeDriver: true
                 }).start(() => {
                     position.setValue({ x: 0, y: 0 });
-                    setCurrentProfileIndex(currentProfileIndex + 1);
+                    Animated.timing(itsAMatchOpacity, {
+                        toValue: 1,
+                        duration: 250,
+                        useNativeDriver: true
+                    }).start(() => {
+                        setTimeout(() => {
+                            itsAMatchOpacity.setValue(0);
+                            setCurrentProfileIndex(currentProfileIndex + 1);
+                        }, 1000);
+                    })
                 });
             } else if (gestureState.dx < -200) {
                 Animated.timing(position, {
-                    toValue: { x: -SCREEN_WIDTH - 100, y: gestureState.dy + gestureState.vy * ANIMATION_TIMING },
-                    duration: ANIMATION_TIMING,
+                    toValue: { x: -SCREEN_WIDTH - 100, y: gestureState.dy * 2 },
+                    duration: 200,
                     useNativeDriver: true
                 }).start(() => {
                     position.setValue({ x: 0, y: 0 });
@@ -89,6 +99,10 @@ export default function Cards() {
 
     return (
         <View style={styles.container}>
+            <Animated.View style={[styles.itsAMatch, { opacity: itsAMatchOpacity }]}>
+                <ItsAMatch opacity={itsAMatchOpacity} />
+            </Animated.View>
+
             {nextProfile !== null ? (
                 <Animated.View style={[{ opacity: nextCardOpacity, transform: [{ scale: nextCardScale }] }, styles.card]}>
                     <Image style={styles.cardImage} source={nextProfile.image} />
@@ -155,7 +169,7 @@ const styles = StyleSheet.create({
         transform: [{ rotate: "30deg" }],
     },
     stampText: {
-        borderWidth: 1,
+        borderWidth: 3,
         fontSize: 32,
         fontWeight: "900",
         padding: 10,
@@ -194,5 +208,9 @@ const styles = StyleSheet.create({
         color: "white",
         fontWeight: "bold",
         backgroundColor: "#444"
+    },
+    itsAMatch: {
+        position: "absolute",
+        zIndex: 1000,
     }
 });
