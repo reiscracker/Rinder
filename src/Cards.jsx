@@ -1,33 +1,41 @@
 import React, { useRef, useState } from "react";
-import { Animated, Image, PanResponder, StyleSheet, Text, useWindowDimensions, View } from "react-native";
+import { Animated, Button, Image, PanResponder, StyleSheet, Text, useWindowDimensions, View } from "react-native";
+import EndCard from "./EndCard";
 
 
 const profiles = [
-    { name: "Steak", tags: ["zart", "kross", "medium"], image: require("../assets/profiles/steak.jpg") },
-    { name: "Braten", tags: ["fett", "kräftig"], image: require("../assets/profiles/braten.jpg") },
-    { name: "Hack", tags: ["fein", "frisch"], image: require("../assets/profiles/hack.jpg") },
-    { name: "Merguez", tags: ["würzig", "scharf"], image: require("../assets/profiles/merguez.jpg") },
+    // { name: "Steak", tags: ["zart", "kross", "medium"], image: require("../assets/profiles/steak.jpg") },
+    // { name: "Braten", tags: ["fett", "kräftig"], image: require("../assets/profiles/braten.jpg") },
+    // { name: "Hack", tags: ["fein", "frisch"], image: require("../assets/profiles/hack.jpg") },
+    // { name: "Merguez", tags: ["würzig", "scharf"], image: require("../assets/profiles/merguez.jpg") },
     { name: "TBone", tags: ["fett"], image: require("../assets/profiles/tbone.jpg") },
 ];
+
 
 export default function Cards() {
     const [currentProfileIndex, setCurrentProfileIndex] = useState(0);
     const position = useRef(new Animated.ValueXY()).current;
+    const tapStartPosition = useRef(new Animated.ValueXY()).current;
     const currentProfile = profiles[currentProfileIndex];
-    const nextProfile = currentProfileIndex < profiles.length ? profiles[currentProfileIndex + 1] : null;
+    const hasNextProfile = currentProfileIndex < profiles.length - 1;
+    const nextProfile = hasNextProfile ? profiles[currentProfileIndex + 1] : null;
 
-    const { width: SCREEN_WIDTH } = useWindowDimensions();
+    const ANIMATION_TIMING = 350;
+    const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = useWindowDimensions();
 
     const panResponder = PanResponder.create({
         onStartShouldSetPanResponder: () => true,
+        onPanResponderStart: (event, gestureState) => {
+            tapStartPosition.setValue({ x: gestureState.x0, y: gestureState.y0 });
+        },
         onPanResponderMove: (event, gestureState) => {
             position.setValue({ x: gestureState.dx, y: gestureState.dy });
         },
         onPanResponderRelease: (event, gestureState) => {
             if (gestureState.dx > 200) {
                 Animated.timing(position, {
-                    toValue: { x: SCREEN_WIDTH + 100, y: gestureState.dy },
-                    duration: 400,
+                    toValue: { x: SCREEN_WIDTH + 100, y: gestureState.dy + gestureState.vy * ANIMATION_TIMING },
+                    duration: ANIMATION_TIMING,
                     useNativeDriver: true
                 }).start(() => {
                     position.setValue({ x: 0, y: 0 });
@@ -35,8 +43,8 @@ export default function Cards() {
                 });
             } else if (gestureState.dx < -200) {
                 Animated.timing(position, {
-                    toValue: { x: -SCREEN_WIDTH - 100, y: gestureState.dy },
-                    duration: 400,
+                    toValue: { x: -SCREEN_WIDTH - 100, y: gestureState.dy + gestureState.vy * ANIMATION_TIMING },
+                    duration: ANIMATION_TIMING,
                     useNativeDriver: true
                 }).start(() => {
                     position.setValue({ x: 0, y: 0 });
@@ -52,9 +60,10 @@ export default function Cards() {
         }
     });
 
-    const rotate = position.x.interpolate({
-        inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
-        outputRange: ["-10deg", "0deg", "10deg"],
+    const rotateDirection = tapStartPosition.y.interpolate({ inputRange: [0, SCREEN_HEIGHT / 2 - 50, SCREEN_HEIGHT], outputRange: [-1, -1, 1], extrapolate: 'clamp' });
+    const rotate = Animated.multiply(position.x, rotateDirection).interpolate({
+        inputRange: [-SCREEN_WIDTH / 2, SCREEN_WIDTH / 2],
+        outputRange: ["-20deg", "20deg"],
         extrapolate: "clamp",
     });
     const leftStampOpacity = position.x.interpolate({
@@ -80,29 +89,35 @@ export default function Cards() {
 
     return (
         <View style={styles.container}>
-            {nextProfile && <Animated.View style={[{ opacity: nextCardOpacity, transform: [{ scale: nextCardScale }] }, styles.card]}>
-                <Image style={styles.cardImage} source={nextProfile.image} />
-                <Text style={styles.name}>{nextProfile.name}</Text>
-                <View style={styles.tagContainer}>
-                    {nextProfile.tags.map((tag, i) => <Text key={i} style={styles.tag}>{tag}</Text>)}
-                </View>
-            </Animated.View>}
-            <Animated.View
-                {...panResponder.panHandlers}
-                style={[styles.card, { transform: [...position.getTranslateTransform(), { rotate }] }]}
-            >
-                <Animated.View style={[{ opacity: leftStampOpacity, transform: [{ rotate: "-30deg" }] }, styles.stamp, styles.leftStamp]}>
-                    <Text style={[styles.stampText, styles.leftStampText]}>LECKER!</Text>
+            {nextProfile !== null ? (
+                <Animated.View style={[{ opacity: nextCardOpacity, transform: [{ scale: nextCardScale }] }, styles.card]}>
+                    <Image style={styles.cardImage} source={nextProfile.image} />
+                    <Text style={styles.name}>{nextProfile.name}</Text>
+                    <View style={styles.tagContainer}>
+                        {nextProfile.tags.map((tag, i) => <Text key={i} style={styles.tag}>{tag}</Text>)}
+                    </View>
                 </Animated.View>
-                <Animated.View style={[{ opacity: rightStampOpacity, transform: [{ rotate: "30deg" }] }, styles.stamp, styles.rightStamp]}>
-                    <Text style={[styles.stampText, styles.rightStampText]}>IGITT!</Text>
+            ) : (
+                <EndCard onResetPress={() => setCurrentProfileIndex(0)} />
+            )}
+            {currentProfile && (
+                <Animated.View
+                    {...panResponder.panHandlers}
+                    style={[styles.card, { transform: [...position.getTranslateTransform(), { rotate: rotate }] }]}
+                >
+                    <Animated.View style={[{ opacity: leftStampOpacity, transform: [{ rotate: "-30deg" }] }, styles.stamp, styles.leftStamp]}>
+                        <Text style={[styles.stampText, styles.leftStampText]}>LECKER!</Text>
+                    </Animated.View>
+                    <Animated.View style={[{ opacity: rightStampOpacity, transform: [{ rotate: "30deg" }] }, styles.stamp, styles.rightStamp]}>
+                        <Text style={[styles.stampText, styles.rightStampText]}>IGITT!</Text>
+                    </Animated.View>
+                    <Image style={styles.cardImage} source={currentProfile.image} />
+                    <Text style={styles.name}>{currentProfile.name}</Text>
+                    <View style={styles.tagContainer}>
+                        {currentProfile.tags.map((tag, i) => <Text key={i} style={styles.tag}>{tag}</Text>)}
+                    </View>
                 </Animated.View>
-                <Image style={styles.cardImage} source={currentProfile.image} />
-                <Text style={styles.name}>{currentProfile.name}</Text>
-                <View style={styles.tagContainer}>
-                    {currentProfile.tags.map((tag, i) => <Text key={i} style={styles.tag}>{tag}</Text>)}
-                </View>
-            </Animated.View>
+            )}
         </View>
     );
 }
