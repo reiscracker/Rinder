@@ -24,9 +24,6 @@ const styles = StyleSheet.create({
   app: {
     flex: 1,
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-    // backgroundColor: '#fff',
-    // alignItems: 'center',
-    // justifyContent: 'center',
   },
   header: {
     height: 50

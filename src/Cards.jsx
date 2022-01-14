@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Animated, Easing, Button, Image, PanResponder, StyleSheet, Text, useWindowDimensions, View } from "react-native";
+import Card from "./Card";
 import EndCard from "./EndCard";
 import ItsAMatch from "./ItsAMatch";
 
@@ -104,12 +105,8 @@ export default function Cards() {
             </Animated.View>
 
             {nextProfile !== null ? (
-                <Animated.View style={[{ opacity: nextCardOpacity, transform: [{ scale: nextCardScale }] }, styles.card]}>
-                    <Image style={styles.cardImage} source={nextProfile.image} />
-                    <Text style={styles.name}>{nextProfile.name}</Text>
-                    <View style={styles.tagContainer}>
-                        {nextProfile.tags.map((tag, i) => <Text key={i} style={styles.tag}>{tag}</Text>)}
-                    </View>
+                <Animated.View style={[{ opacity: nextCardOpacity, transform: [{ scale: nextCardScale }] }, styles.cardContainer]}>
+                    <Card imageSource={nextProfile.image} name={nextProfile.name} tags={nextProfile.tags} />
                 </Animated.View>
             ) : (
                 <EndCard onResetPress={() => setCurrentProfileIndex(0)} />
@@ -117,7 +114,7 @@ export default function Cards() {
             {currentProfile && (
                 <Animated.View
                     {...panResponder.panHandlers}
-                    style={[styles.card, { transform: [...position.getTranslateTransform(), { rotate: rotate }] }]}
+                    style={[styles.cardContainer, { transform: [...position.getTranslateTransform(), { rotate: rotate }] }]}
                 >
                     <Animated.View style={[{ opacity: leftStampOpacity, transform: [{ rotate: "-30deg" }] }, styles.stamp, styles.leftStamp]}>
                         <Text style={[styles.stampText, styles.leftStampText]}>LECKER!</Text>
@@ -125,11 +122,7 @@ export default function Cards() {
                     <Animated.View style={[{ opacity: rightStampOpacity, transform: [{ rotate: "30deg" }] }, styles.stamp, styles.rightStamp]}>
                         <Text style={[styles.stampText, styles.rightStampText]}>IGITT!</Text>
                     </Animated.View>
-                    <Image style={styles.cardImage} source={currentProfile.image} />
-                    <Text style={styles.name}>{currentProfile.name}</Text>
-                    <View style={styles.tagContainer}>
-                        {currentProfile.tags.map((tag, i) => <Text key={i} style={styles.tag}>{tag}</Text>)}
-                    </View>
+                    <Card imageSource={currentProfile.image} name={currentProfile.name} tags={currentProfile.tags} />
                 </Animated.View>
             )}
         </View>
@@ -143,17 +136,10 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center"
     },
-    card: {
+    cardContainer: {
         position: "absolute",
         width: "100%",
-        height: "100%",
-    },
-    cardImage: {
-        flex: 1,
-        width: null,
-        height: null,
-        resizeMode: "cover",
-        borderRadius: 20,
+        height: "100%"
     },
     stamp: {
         position: "absolute",
@@ -181,33 +167,6 @@ const styles = StyleSheet.create({
     rightStampText: {
         color: "red",
         borderColor: "red",
-    },
-    name: {
-        position: "absolute",
-        bottom: "25%",
-        left: "10%",
-        color: "white",
-        fontWeight: "900",
-        fontSize: 32,
-        textShadowColor: "black",
-        textShadowRadius: 3
-    },
-    tagContainer: {
-        position: "absolute",
-        flex: 1,
-        left: "10%",
-        right: "10%",
-        bottom: "15%",
-        flexDirection: "row",
-    },
-    tag: {
-        marginRight: 10,
-        paddingVertical: 5,
-        paddingHorizontal: 15,
-        borderRadius: 50,
-        color: "white",
-        fontWeight: "bold",
-        backgroundColor: "#444"
     },
     itsAMatch: {
         position: "absolute",
