@@ -2,8 +2,7 @@ import React, { useRef, useState } from "react";
 import { Animated, Easing, Button, Image, PanResponder, StyleSheet, Text, useWindowDimensions, View } from "react-native";
 import Card from "./Card";
 import EndCard from "./EndCard";
-import ItsAMatch from "./ItsAMatch";
-
+import PropTypes from "prop-types";
 
 const profiles = [
     { name: "Steak", tags: ["zart", "blutig", "roh"], image: require("../assets/profiles/steak.jpg") },
@@ -14,11 +13,10 @@ const profiles = [
 ];
 
 
-export default function Cards() {
+export default function Cards({ onMatch }) {
     const [currentProfileIndex, setCurrentProfileIndex] = useState(0);
     const position = useRef(new Animated.ValueXY()).current;
     const tapStartPosition = useRef(new Animated.ValueXY()).current;
-    const itsAMatchOpacity = useRef(new Animated.Value(0)).current;
     const currentProfile = profiles[currentProfileIndex];
     const hasNextProfile = currentProfileIndex < profiles.length - 1;
     const nextProfile = hasNextProfile ? profiles[currentProfileIndex + 1] : null;
@@ -34,25 +32,17 @@ export default function Cards() {
             position.setValue({ x: gestureState.dx, y: gestureState.dy });
         },
         onPanResponderRelease: (event, gestureState) => {
-            if (gestureState.dx > 200) {
+            if (gestureState.dx > 200) { // Swiped right
                 Animated.timing(position, {
                     toValue: { x: SCREEN_WIDTH + 100, y: gestureState.dy * 2 },
                     duration: 200,
                     useNativeDriver: true
                 }).start(() => {
+                    onMatch(currentProfile);
                     position.setValue({ x: 0, y: 0 });
-                    Animated.timing(itsAMatchOpacity, {
-                        toValue: 1,
-                        duration: 250,
-                        useNativeDriver: true
-                    }).start(() => {
-                        setTimeout(() => {
-                            itsAMatchOpacity.setValue(0);
-                            setCurrentProfileIndex(currentProfileIndex + 1);
-                        }, 1000);
-                    })
+                    setCurrentProfileIndex(currentProfileIndex + 1);
                 });
-            } else if (gestureState.dx < -200) {
+            } else if (gestureState.dx < -200) { // Swiped left
                 Animated.timing(position, {
                     toValue: { x: -SCREEN_WIDTH - 100, y: gestureState.dy * 2 },
                     duration: 200,
@@ -100,10 +90,6 @@ export default function Cards() {
 
     return (
         <View style={styles.container}>
-            <Animated.View style={[styles.itsAMatch, { opacity: itsAMatchOpacity }]}>
-                <ItsAMatch opacity={itsAMatchOpacity} />
-            </Animated.View>
-
             {nextProfile !== null ? (
                 <Animated.View style={[{ opacity: nextCardOpacity, transform: [{ scale: nextCardScale }] }, styles.cardContainer]}>
                     <Card imageSource={nextProfile.image} name={nextProfile.name} tags={nextProfile.tags} />
@@ -173,3 +159,7 @@ const styles = StyleSheet.create({
         zIndex: 1000,
     }
 });
+
+Cards.propTypes = {
+    onMatch: PropTypes.func.isRequired,
+}

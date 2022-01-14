@@ -1,17 +1,26 @@
+import React, { useState } from "react";
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
-import React from "react";
 import { Platform, SafeAreaView, StatusBar, StyleSheet, Text, View } from 'react-native';
 import Cards from './src/Cards';
+import ItsAMatch from "./src/ItsAMatch";
 
 
 export default function App() {
+  const [match, setMatch] = useState(null);
+
   return (
     <SafeAreaView style={styles.app}>
       <View style={styles.header}>
         <Text style={styles.title}>Rinder</Text>
       </View>
-      <View style={styles.cardContainer}>
-        <Cards />
+      <View style={styles.mainContent}>
+        {match && <>
+          <View style={[styles.overlay, styles.opaque]}></View>
+          <View style={styles.overlay}>
+            <ItsAMatch imageSource={match.image} onChatPress={() => { }} onCancelPress={() => setMatch(null)} />
+          </View>
+        </>}
+        <Cards onMatch={matched => setMatch(matched)} />
       </View>
       <View style={styles.footer}>
       </View>
@@ -39,7 +48,23 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontFamily: "serif"
   },
-  cardContainer: {
+  overlay: {
+    zIndex: 100,
+    position: "absolute",
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: 50,
+    paddingHorizontal: 30
+  },
+  opaque: {
+    opacity: 0.4,
+    backgroundColor: "white",
+  },
+  mainContent: {
     flex: 1,
     overflow: "hidden"
   }
