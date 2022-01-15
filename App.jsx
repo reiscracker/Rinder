@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 import { Platform, SafeAreaView, StatusBar, StyleSheet, Text, View } from 'react-native';
-import { NavigationContainer, StackActions } from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Cards from './src/Cards';
 import ItsAMatch from "./src/ItsAMatch";
@@ -17,7 +17,7 @@ function CardsScreen({ navigation }) {
       {match && <>
         <View style={[styles.overlay, styles.opaque]}></View>
         <View style={styles.overlay}>
-          <ItsAMatch imageSource={match.image} onChatPress={() => { navigation.navigate("Chat", { match }) }} onCancelPress={() => setMatch(null)} />
+          <ItsAMatch imageSource={match.image} onChatPress={() => { navigation.navigate("Chat", { match }); setMatch(null); }} onCancelPress={() => setMatch(null)} />
         </View>
       </>}
       <Cards onMatch={matched => setMatch(matched)} />
@@ -30,7 +30,7 @@ function ChatScreen({ route }) {
 
   return (
     <View style={styles.mainContent}>
-      <Chat responses={["Hi Na", "Ich bin ganz saftig"]} />
+      <Chat responses={["Mit mir wirds heiß", "Ich bin ganz saftig", "Willst du mich vernaschen?", "Iss mich!"]} />
     </View>
   );
 }

@@ -10,7 +10,7 @@ export default function ChatInput({ onSubmit }) {
         <View style={styles.container}>
             <TextInput style={styles.input}
                 placeholder="Schreib etwas!"
-                onSubmitEditing={() => { inputRef.current.clear(); onSubmit() }}
+                onSubmitEditing={(event) => { inputRef.current.clear(); onSubmit(event.nativeEvent.text); }}
                 ref={inputRef}
             />
         </View>
