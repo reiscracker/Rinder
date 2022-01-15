@@ -1,31 +1,52 @@
 import React, { useState } from "react";
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 import { Platform, SafeAreaView, StatusBar, StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer, StackActions } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Cards from './src/Cards';
 import ItsAMatch from "./src/ItsAMatch";
+import ChatScreenHeader from "./src/ChatScreenHeader";
 
+const Stack = createNativeStackNavigator();
 
-export default function App() {
+function CardsScreen({ navigation }) {
   const [match, setMatch] = useState(null);
+  return (
+    <View style={[styles.mainContent, styles.cardsScreen]}>
+      {match && <>
+        <View style={[styles.overlay, styles.opaque]}></View>
+        <View style={styles.overlay}>
+          <ItsAMatch imageSource={match.image} onChatPress={() => { navigation.navigate("Chat", { match }) }} onCancelPress={() => setMatch(null)} />
+        </View>
+      </>}
+      <Cards onMatch={matched => setMatch(matched)} />
+    </View>
+  );
+}
+
+function ChatScreen({ route }) {
+  const { match } = route.params;
 
   return (
-    <SafeAreaView style={styles.app}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Rinder</Text>
-      </View>
-      <View style={styles.mainContent}>
-        {match && <>
-          <View style={[styles.overlay, styles.opaque]}></View>
-          <View style={styles.overlay}>
-            <ItsAMatch imageSource={match.image} onChatPress={() => { }} onCancelPress={() => setMatch(null)} />
-          </View>
-        </>}
-        <Cards onMatch={matched => setMatch(matched)} />
-      </View>
-      <View style={styles.footer}>
-      </View>
-      <ExpoStatusBar style="auto" />
-    </SafeAreaView>
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>Hi I am match.name</Text>
+    </View>
+  );
+}
+
+export default function App() {
+
+  return (
+    <NavigationContainer>
+      <SafeAreaView style={styles.app}>
+        <Stack.Navigator initialRouteName="Cards">
+          <Stack.Screen name="Cards" component={CardsScreen} options={{ title: "Rinder" }} />
+          <Stack.Screen name="Chat" component={ChatScreen}
+            options={({ route }) => ({ headerTitle: () => <ChatScreenHeader {...route.params.match} /> })} />
+        </Stack.Navigator>
+        <ExpoStatusBar style="auto" />
+      </SafeAreaView>
+    </NavigationContainer>
   );
 }
 
@@ -35,9 +56,6 @@ const styles = StyleSheet.create({
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
   header: {
-    height: 50
-  },
-  footer: {
     height: 50
   },
   title: {
@@ -53,7 +71,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 0,
     right: 0,
-    bottom: 0,
+    bottom: 50,
     left: 0,
     justifyContent: "center",
     alignItems: "center",
@@ -67,5 +85,8 @@ const styles = StyleSheet.create({
   mainContent: {
     flex: 1,
     overflow: "hidden"
+  },
+  cardsScreen: {
+    paddingBottom: 50,
   }
 });
