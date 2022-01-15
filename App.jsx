@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Cards from './src/Cards';
 import ItsAMatch from "./src/ItsAMatch";
 import ChatScreenHeader from "./src/ChatScreenHeader";
+import Chat from "./src/Chat";
 
 const Stack = createNativeStackNavigator();
 
@@ -28,8 +29,8 @@ function ChatScreen({ route }) {
   const { match } = route.params;
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Hi I am match.name</Text>
+    <View style={styles.mainContent}>
+      <Chat responses={["Hi Na", "Ich bin ganz saftig"]} />
     </View>
   );
 }
@@ -42,7 +43,10 @@ export default function App() {
         <Stack.Navigator initialRouteName="Cards">
           <Stack.Screen name="Cards" component={CardsScreen} options={{ title: "Rinder" }} />
           <Stack.Screen name="Chat" component={ChatScreen}
-            options={({ route }) => ({ headerTitle: () => <ChatScreenHeader {...route.params.match} /> })} />
+            options={({ route }) => ({
+              headerTitle: () => <ChatScreenHeader {...route.params.match} />
+            })}
+          />
         </Stack.Navigator>
         <ExpoStatusBar style="auto" />
       </SafeAreaView>
