@@ -8,13 +8,13 @@ import { useTheme } from '@react-navigation/native';
     Thanks Prajwal Kulkarni !
 */
 
-export default function ChatBubble({ text, sentByMe = false }) {
+export default function ChatBubble({ children, sentByMe = false }) {
     const { colors } = useTheme();
     const bubbleStyle = sentByMe ? "me" : "other";
 
     return (
         <View style={[styles.container, styles[bubbleStyle]]}>
-            <Text style={styles.text}>{text}</Text>
+            {children}
             <View style={styles[bubbleStyle + "Arrow"]}></View>
             <View style={[styles[bubbleStyle + "ArrowOverlap"], { backgroundColor: colors.background }]}></View>
         </View>
@@ -22,7 +22,7 @@ export default function ChatBubble({ text, sentByMe = false }) {
 }
 
 ChatBubble.propTypes = {
-    text: PropTypes.string.isRequired,
+    children: PropTypes.element,
     sentByMe: PropTypes.bool,
 }
 
