@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
         backgroundColor: "red",
     },
     secondary: {
-        backgroundColor: "green",
+        backgroundColor: "#732929cc",
     },
     text: {
         fontWeight: "bold",

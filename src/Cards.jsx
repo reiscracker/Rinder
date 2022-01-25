@@ -1,27 +1,16 @@
-import React, { useRef, useState } from "react";
-import { Animated, Easing, Button, Image, PanResponder, StyleSheet, Text, useWindowDimensions, View } from "react-native";
+import PropTypes from "prop-types";
+import React, { useRef } from "react";
+import { Animated, PanResponder, StyleSheet, Text, useWindowDimensions, View } from "react-native";
 import Card from "./Card";
 import EndCard from "./EndCard";
-import PropTypes from "prop-types";
-
-const profiles = [
-    { name: "Steak", tags: ["zart", "blutig", "roh"], image: require("../assets/profiles/steak.jpg") },
-    { name: "Braten", tags: ["fett", "kräftig"], image: require("../assets/profiles/braten.jpg") },
-    { name: "Hack", tags: ["fein", "frisch"], image: require("../assets/profiles/hack.jpg") },
-    { name: "Merguez", tags: ["würzig", "scharf"], image: require("../assets/profiles/merguez.jpg") },
-    { name: "TBone", tags: ["fett", "medium"], image: require("../assets/profiles/tbone.jpg") },
-];
+import useProfiles from "./useProfiles";
 
 
 export default function Cards({ onMatch }) {
-    const [currentProfileIndex, setCurrentProfileIndex] = useState(0);
     const position = useRef(new Animated.ValueXY()).current;
     const tapStartPosition = useRef(new Animated.ValueXY()).current;
-    const currentProfile = profiles[currentProfileIndex];
-    const hasNextProfile = currentProfileIndex < profiles.length - 1;
-    const nextProfile = hasNextProfile ? profiles[currentProfileIndex + 1] : null;
-
     const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = useWindowDimensions();
+    const [currentProfile, nextProfile, toNextProfile, resetProfiles] = useProfiles();
 
     const panResponder = PanResponder.create({
         onStartShouldSetPanResponder: () => true,
@@ -40,7 +29,7 @@ export default function Cards({ onMatch }) {
                 }).start(() => {
                     onMatch(currentProfile);
                     position.setValue({ x: 0, y: 0 });
-                    setCurrentProfileIndex(currentProfileIndex + 1);
+                    toNextProfile();
                 });
             } else if (gestureState.dx < -200) { // Swiped left
                 Animated.timing(position, {
@@ -49,7 +38,7 @@ export default function Cards({ onMatch }) {
                     useNativeDriver: true
                 }).start(() => {
                     position.setValue({ x: 0, y: 0 });
-                    setCurrentProfileIndex(currentProfileIndex + 1);
+                    toNextProfile();
                 });
             } else {
                 Animated.spring(position, {
@@ -90,12 +79,12 @@ export default function Cards({ onMatch }) {
 
     return (
         <View style={styles.container}>
-            {nextProfile !== null ? (
+            {nextProfile ? (
                 <Animated.View style={[{ opacity: nextCardOpacity, transform: [{ scale: nextCardScale }] }, styles.cardContainer]}>
                     <Card imageSource={nextProfile.image} name={nextProfile.name} tags={nextProfile.tags} />
                 </Animated.View>
             ) : (
-                <EndCard onResetPress={() => setCurrentProfileIndex(0)} />
+                <EndCard onResetPress={resetProfiles} />
             )}
             {currentProfile && (
                 <Animated.View
