@@ -4,6 +4,7 @@ import { Animated, PanResponder, StyleSheet, Text, useWindowDimensions, View } f
 import Card from "./Card";
 import EndCard from "./EndCard";
 import useProfiles from "./useProfiles";
+import useRandomEvent from "./useRandomEvent";
 
 
 export default function Cards({ onMatch }) {
@@ -11,6 +12,7 @@ export default function Cards({ onMatch }) {
     const tapStartPosition = useRef(new Animated.ValueXY()).current;
     const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = useWindowDimensions();
     const [currentProfile, nextProfile, toNextProfile, resetProfiles] = useProfiles();
+    const triggerMatchChance = useRandomEvent(() => onMatch(currentProfile));
 
     const panResponder = PanResponder.create({
         onStartShouldSetPanResponder: () => true,
@@ -27,7 +29,7 @@ export default function Cards({ onMatch }) {
                     duration: 200,
                     useNativeDriver: true
                 }).start(() => {
-                    onMatch(currentProfile);
+                    triggerMatchChance();
                     position.setValue({ x: 0, y: 0 });
                     toNextProfile();
                 });
