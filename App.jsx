@@ -6,7 +6,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Cards from './src/Cards';
 import ItsAMatch from "./src/ItsAMatch";
 import ChatScreenHeader from "./src/ChatScreenHeader";
-import Chat from "./src/Chat";
+import Chat from "./src/chat/Chat";
 
 const Stack = createNativeStackNavigator();
 
@@ -30,7 +30,7 @@ function ChatScreen({ route }) {
 
   return (
     <View style={styles.mainContent}>
-      <Chat responses={["Mit mir wirds heiß", "Ich bin ganz saftig", "Willst du mich vernaschen?", "Iss mich!"]} />
+      <Chat />
     </View>
   );
 }

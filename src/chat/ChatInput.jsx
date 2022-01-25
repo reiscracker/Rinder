@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { View, StyleSheet, TextInput } from "react-native";
 import PropTypes from "prop-types";
-import Button from "./Button";
+import Button from "../Button";
 
 export default function ChatInput({ onSubmit }) {
     const inputRef = useRef();
