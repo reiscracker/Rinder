@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
-import { Platform, SafeAreaView, TouchableOpacity, StatusBar, StyleSheet, Text, View } from 'react-native';
+import { Platform, SafeAreaView, TouchableOpacity, StatusBar, StyleSheet, Text, View, Image } from 'react-native';
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Cards from './src/Cards';
 import ItsAMatch from "./src/ItsAMatch";
-import ChatScreenHeader from "./src/ChatScreenHeader";
 import Chat from "./src/chat/Chat";
 
 const Stack = createNativeStackNavigator();
@@ -27,7 +26,6 @@ function CardsScreen({ navigation }) {
 
 function ChatScreen({ route }) {
   const { match } = route.params;
-
   return (
     <View style={styles.mainContent}>
       <Chat />
@@ -40,11 +38,21 @@ export default function App() {
   return (
     <NavigationContainer>
       <SafeAreaView style={styles.app}>
-        <Stack.Navigator initialRouteName="Cards">
-          <Stack.Screen name="Cards" component={CardsScreen} options={{ title: "Rinder" }} />
+        <Stack.Navigator
+          initialRouteName="Cards"
+          screenOptions={{ headerTintColor: "red", headerTitleAlign: "center" }}
+        >
+          <Stack.Screen name="Cards" component={CardsScreen}
+            options={{
+              title: "Rinder",
+              headerTitleStyle: { fontWeight: "bold", fontSize: 36 }
+            }}
+          />
           <Stack.Screen name="Chat" component={ChatScreen}
             options={({ route }) => ({
-              headerTitle: () => <ChatScreenHeader {...route.params.match} />
+              title: `Chat mit ${route.params.match.name}`,
+              headerTitleStyle: { fontWeight: "bold", fontSize: 24 },
+              headerRight: () => <Image source={route.params.match.image} style={styles.roundIcon} />
             })}
           />
         </Stack.Navigator>
@@ -100,5 +108,10 @@ const styles = StyleSheet.create({
   },
   cardsScreen: {
     paddingBottom: 50,
+  },
+  roundIcon: {
+    width: 50,
+    height: 50,
+    borderRadius: 50,
   }
 });
