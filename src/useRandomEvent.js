@@ -3,15 +3,16 @@ import { useRef } from "react";
 const INITIAL_CHANCE = 0.3;
 
 export default function useRandomEvent(onEvent) {
-    let chance = useRef(INITIAL_CHANCE).current;
+    let chance = useRef(INITIAL_CHANCE);
 
     function triggerChance() {
-        const isSuccess = Math.random() < chance;
+        const attempt = Math.random();
+        const isSuccess = attempt < chance.current;
         if (isSuccess) {
-            chance = INITIAL_CHANCE;
+            chance.current = INITIAL_CHANCE;
             onEvent();
         } else {
-            chance += INITIAL_CHANCE;
+            chance.current += INITIAL_CHANCE;
         }
     }
 

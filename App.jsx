@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
-import { Platform, SafeAreaView, StatusBar, StyleSheet, Text, View } from 'react-native';
+import { Platform, SafeAreaView, TouchableOpacity, StatusBar, StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Cards from './src/Cards';
@@ -15,8 +15,8 @@ function CardsScreen({ navigation }) {
   return (
     <View style={[styles.mainContent, styles.cardsScreen]}>
       {match && <>
-        <View style={[styles.overlay, styles.opaque]}></View>
-        <View style={styles.overlay}>
+        <TouchableOpacity style={[styles.overlay]} onPress={() => { setMatch(null); }}></TouchableOpacity>
+        <View style={styles.modal}>
           <ItsAMatch imageSource={match.image} onChatPress={() => { navigation.navigate("Chat", { match }); setMatch(null); }} onCancelPress={() => setMatch(null)} />
         </View>
       </>}
@@ -75,16 +75,24 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 0,
     right: 0,
-    bottom: 50,
+    bottom: 0,
     left: 0,
     justifyContent: "center",
     alignItems: "center",
-    paddingVertical: 50,
-    paddingHorizontal: 30
-  },
-  opaque: {
+    // paddingVertical: 50,
+    // paddingHorizontal: 30
     opacity: 0.4,
     backgroundColor: "white",
+  },
+  modal: {
+    zIndex: 100,
+    position: "absolute",
+    top: 50,
+    right: 30,
+    bottom: 100,
+    left: 30,
+    justifyContent: "center",
+    alignItems: "center",
   },
   mainContent: {
     flex: 1,
