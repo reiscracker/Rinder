@@ -4,10 +4,11 @@ import useMessages from "./useMessages";
 import ChatBubble from "./ChatBubble";
 import ChatInput from "./ChatInput";
 import TypingAnimation from "./TypingAnimation";
+import PropTypes from "prop-types";
 
-export default function Chat() {
+export default function Chat({ profileResponses }) {
 
-    const [messages, addUserMessage, isWaitingForResponse] = useMessages();
+    const [messages, addUserMessage, isWaitingForResponse] = useMessages(profileResponses);
 
     return (
         <View style={styles.container}>
@@ -29,6 +30,7 @@ export default function Chat() {
 }
 
 Chat.propTypes = {
+    profileResponses: PropTypes.arrayOf(PropTypes.string).isRequired
 }
 
 const styles = StyleSheet.create({

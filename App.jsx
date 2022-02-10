@@ -28,7 +28,7 @@ function ChatScreen({ route }) {
   const { match } = route.params;
   return (
     <View style={styles.mainContent}>
-      <Chat />
+      <Chat profileResponses={match.responses} />
     </View>
   );
 }
