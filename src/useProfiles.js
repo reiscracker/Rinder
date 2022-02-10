@@ -1,12 +1,6 @@
 import { useState } from "react";
 
-const ALL_PROFILES = [
-    { name: "Steak", tags: ["zart", "blutig", "roh"], image: require("../assets/profiles/steak.jpg") },
-    { name: "Braten", tags: ["fett", "kräftig"], image: require("../assets/profiles/braten.jpg") },
-    { name: "Hack", tags: ["fein", "frisch"], image: require("../assets/profiles/hack.jpg") },
-    { name: "Merguez", tags: ["würzig", "scharf"], image: require("../assets/profiles/merguez.jpg") },
-    { name: "TBone", tags: ["fett", "medium"], image: require("../assets/profiles/tbone.jpg") },
-];
+import ALL_PROFILES from "./profiles";
 
 /**
  * Found at https://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array
