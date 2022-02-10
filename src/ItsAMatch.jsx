@@ -16,7 +16,7 @@ export default function ItsAMatch({ imageSource, onChatPress, onCancelPress }) {
 
     return (
         <Animated.View style={[styles.container, { transform: [{ scale }] }]}>
-            <Text style={styles.text}>It's a match! 🎉</Text>
+            <Text style={styles.text}>Angebissen! 🎉</Text>
             <Image style={styles.image} source={imageSource} />
             <View style={styles.buttonContainer}>
                 <Button style="primary" onPress={onChatPress} title="Reinbeißen!" />
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     text: {
         color: "red",
         textAlign: "center",
-        fontSize: 40,
+        fontSize: 35,
         textShadowColor: "black",
         textShadowRadius: 2,
         flex: 1

@@ -89,8 +89,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     // paddingVertical: 50,
     // paddingHorizontal: 30
-    opacity: 0.4,
-    backgroundColor: "white",
+    opacity: 0.6,
+    backgroundColor: "#aaa",
   },
   modal: {
     zIndex: 100,
