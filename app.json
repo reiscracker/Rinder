@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Rinder",
-    "slug": "Rinder",
+    "name": "GRinder",
+    "slug": "grinder",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -17,9 +17,13 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "de.reiscracker.grinder",
+      "buildNumber": "0.0.1",
       "supportsTablet": true
     },
     "android": {
+      "package": "de.reiscracker.grinder",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
