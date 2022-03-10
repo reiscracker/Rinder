@@ -6,7 +6,7 @@ import Button from "./Button";
 export default function EndCard({ onResetPress }) {
     return (
         <View style={styles.container}>
-            <Text style={styles.emptyText}>😵</Text>
+            <Text style={styles.emojiText}>😵</Text>
             <Text style={styles.emptyText}>Der Grill ist leider gerade leer...</Text>
             <View style={styles.row}>
                 <Button onPress={onResetPress} style="primary" title="Aber ich bin hungrig..." />
@@ -22,6 +22,9 @@ const styles = StyleSheet.create({
         paddingVertical: 100,
         justifyContent: "space-evenly",
         alignItems: "center"
+    },
+    emojiText: {
+        fontSize: 120,
     },
     emptyText: {
         fontSize: 34,

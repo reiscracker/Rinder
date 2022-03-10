@@ -70,7 +70,7 @@ export default function Cards({ onMatch }) {
     });
     const nextCardOpacity = position.x.interpolate({
         inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
-        outputRange: [1, 0, 1],
+        outputRange: [0.5, 0, 0.5],
         extrapolate: "clamp",
     });
     const nextCardScale = position.x.interpolate({
@@ -94,10 +94,10 @@ export default function Cards({ onMatch }) {
                     style={[styles.cardContainer, { transform: [...position.getTranslateTransform(), { rotate: rotate }] }]}
                 >
                     <Animated.View style={[{ opacity: leftStampOpacity, transform: [{ rotate: "-30deg" }] }, styles.stamp, styles.leftStamp]}>
-                        <Text style={[styles.stampText, styles.leftStampText]}>LECKER!</Text>
+                        <Text style={[styles.stampText, styles.leftStampText]}>😍</Text>
                     </Animated.View>
                     <Animated.View style={[{ opacity: rightStampOpacity, transform: [{ rotate: "30deg" }] }, styles.stamp, styles.rightStamp]}>
-                        <Text style={[styles.stampText, styles.rightStampText]}>IGITT!</Text>
+                        <Text style={[styles.stampText, styles.rightStampText]}>🤮</Text>
                     </Animated.View>
                     <Card imageSource={currentProfile.image} name={currentProfile.name} tags={currentProfile.tags} />
                 </Animated.View>
@@ -120,30 +120,30 @@ const styles = StyleSheet.create({
     },
     stamp: {
         position: "absolute",
-        top: 50,
+        top: 10,
         zIndex: 1000,
     },
     leftStamp: {
-        left: 20,
+        left: 10,
         transform: [{ rotate: "-30deg" }],
     },
     rightStamp: {
-        right: 20,
+        right: 10,
         transform: [{ rotate: "30deg" }],
     },
     stampText: {
-        borderWidth: 3,
-        fontSize: 32,
+        // borderWidth: 3,
+        fontSize: 120,
         fontWeight: "900",
         padding: 10,
     },
     leftStampText: {
         color: "green",
-        borderColor: "green",
+        // borderColor: "green",
     },
     rightStampText: {
         color: "red",
-        borderColor: "red",
+        // borderColor: "red",
     },
     itsAMatch: {
         position: "absolute",
