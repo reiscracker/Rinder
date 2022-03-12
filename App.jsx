@@ -44,8 +44,7 @@ export default function App() {
         >
           <Stack.Screen name="Cards" component={CardsScreen}
             options={{
-              title: "Rinder",
-              headerTitleStyle: { fontWeight: "bold", fontSize: 36 }
+              headerTitle: () => <Image style={{ width: 200, height: 80 }} source={require('./assets/logo.png')} resizeMode='contain' />,
             }}
           />
           <Stack.Screen name="Chat" component={ChatScreen}
@@ -95,9 +94,9 @@ const styles = StyleSheet.create({
   modal: {
     zIndex: 100,
     position: "absolute",
-    top: 50,
+    top: 40,
     right: 30,
-    bottom: 100,
+    bottom: 90,
     left: 30,
     justifyContent: "center",
     alignItems: "center",

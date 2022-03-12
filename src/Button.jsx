@@ -2,10 +2,12 @@ import React from "react";
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
 import PropTypes from "prop-types";
 
+import { PRIMARY_COLOR, SECONDARY_COLOR } from "./constants";
 
-export default function Button({ onPress, title, style }) {
+
+export default function Button({ onPress, title, type, style }) {
     return (
-        <TouchableOpacity onPress={onPress} style={[styles.button, styles[style]]}>
+        <TouchableOpacity onPress={onPress} style={[styles.button, styles[type], style]}>
             <Text style={styles.text}>{title}</Text>
         </TouchableOpacity>
     );
@@ -20,12 +22,14 @@ const styles = StyleSheet.create({
         borderRadius: 50,
     },
     primary: {
-        backgroundColor: "red",
+        backgroundColor: PRIMARY_COLOR,
     },
     secondary: {
-        backgroundColor: "#732929cc",
+        backgroundColor: SECONDARY_COLOR,
     },
     text: {
+        textAlign: "center",
+        fontSize: 20,
         fontWeight: "bold",
         color: "#eee"
     },
@@ -34,5 +38,6 @@ const styles = StyleSheet.create({
 Button.propTypes = {
     onPress: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
-    style: PropTypes.oneOf(["primary", "secondary"]).isRequired
+    type: PropTypes.oneOf(["primary", "secondary"]).isRequired,
+    style: PropTypes.oneOfType([PropTypes.object, PropTypes.arrayOf(PropTypes.object)])
 }

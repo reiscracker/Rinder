@@ -95,7 +95,7 @@ export default [
     // Haggis
     // Blutwurst
     // Jerky ("Ich bin etwas zäh", "An mir hast du zu knabbern")
-    // Dönerspieß
+    // Dönerspieß ("Soße?" "Salat alles?" "Mit scharf?" "Einpacken?")
     // Salamwurst
     // Mortadella
     // Leberwurst

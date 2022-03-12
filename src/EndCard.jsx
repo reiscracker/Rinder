@@ -9,7 +9,7 @@ export default function EndCard({ onResetPress }) {
             <Text style={styles.emojiText}>😵</Text>
             <Text style={styles.emptyText}>Der Grill ist leider gerade leer...</Text>
             <View style={styles.row}>
-                <Button onPress={onResetPress} style="primary" title="Aber ich bin hungrig..." />
+                <Button onPress={onResetPress} type="primary" title="Aber ich bin hungrig..." />
             </View>
         </View>
     );
