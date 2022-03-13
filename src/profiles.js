@@ -61,7 +61,7 @@ export default [
     },
     {
         name: "Bacon",
-        tags: ["salzig", "kross", "literally das Beste der Welt"],
+        tags: ["salzig", "kross"],
         image: require("../assets/profiles/bacon.jpg"), // https://commons.wikimedia.org/wiki/File:Flickr_-_cyclonebill_-_Bacon_(1).jpg
         responses: ["Bacon, Bacon, Bacon, Bacon, Bacon, Bacon, Bacon, Bacon 🐷", "Muss ich noch mehr zu mir sagen?"]
     },
