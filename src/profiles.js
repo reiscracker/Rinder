@@ -115,7 +115,14 @@ export default [
     // Andouille
     // Bratwurst
     // Kassler
-    // Tofu (Chatnachricht "Achtung: Dieses Rind wurde als Fakeprofil gemeldet)
+    {
+        name: "Tofu",
+        tags: ["Geschmacklos"],
+        image: require("../assets/profiles/tofu.jpg"),
+        responses: [
+            { text: "Achtung, dieses Profil wurde als Fakeprofil gemeldet!", type: "warning" },
+        ]
+    },
     // Sellerieschnitzel (muss Button Fake-Profil melden)
     // Kotelett
     {

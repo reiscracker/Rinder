@@ -31,37 +31,54 @@ function useResponseList(openingResponses, finalResponse) {
     }
 }
 
+const isSystemMessage = message => message.type !== undefined && message.type !== "default";
 
 export default function useMessages(profileResponses, finalProfileResponse) {
     const pickResponse = useResponseList(profileResponses, finalProfileResponse);
     const [messages, setMessages] = useState([]);
     const [isWaitingForResponse, setIsWaitingForResponse] = useState(false);
 
-    // Adds a response from the profile after a short random timeout
-    function addProfileMessage() {
-        const text = pickResponse();
-        // If pickResponse returns undefined because the profile exhausted all responses, do nothing
-        if (text) {
-            setIsWaitingForResponse(true);
-            setTimeout(() => {
-                setMessages([...messages, { text, sentByMe: false }]); // Message sent by Rind
-                setIsWaitingForResponse(false);
-            }, Math.random() * RANDOM_RESPONSE_DELAY + MINIMUM_RESPONSE_DELAY);
+    const addMessage = (message, sentByMe) => {
+        if (typeof message === "string") {
+            setMessages([...messages, { text: message, sentByMe, type: "default" }]);
+        } else if (typeof message === "object" && message.text) {
+            setMessages([...messages, { text: message.text, sentByMe, type: message.type || "default" }]);
+        } else {
+            throw new Error("message is not a string and has no 'text' attribute");
+        }
+    }
+    const addMessageWithTimeout = (message, sentByMe) => {
+        setIsWaitingForResponse(true);
+        setTimeout(() => {
+            addMessage(message, sentByMe);
+            setIsWaitingForResponse(false);
+        }, Math.random() * RANDOM_RESPONSE_DELAY + MINIMUM_RESPONSE_DELAY);
+    }
+
+    function addProfileResponse() {
+        const response = pickResponse();
+        // pickResponse can return undefined when the profile exhausted all responses
+        if (response) {
+            if (isSystemMessage(response)) {
+                addMessage(response, false);
+            } else {
+                addMessageWithTimeout(response, false);
+            }
         }
     };
 
     function addUserMessage(text) {
-        setMessages([...messages, { text, sentByMe: true }]); // message sent by user
+        addMessage(text, true);
     }
 
     // Initially the Rind should start the conversation with a message once
-    useEffect(addProfileMessage, []);
+    useEffect(addProfileResponse, []);
 
     // A response from the Rind is added after each user message
     useEffect(() => {
         const isLastMessageFromUser = messages[messages.length - 1]?.sentByMe === true;
         if (isLastMessageFromUser) {
-            addProfileMessage();
+            addProfileResponse();
         }
     }, [messages]);
 
