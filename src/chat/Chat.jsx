@@ -6,9 +6,9 @@ import ChatInput from "./ChatInput";
 import TypingAnimation from "./TypingAnimation";
 import PropTypes from "prop-types";
 
-export default function Chat({ profileResponses }) {
+export default function Chat({ profileResponses, finalProfileResponse }) {
 
-    const [messages, addUserMessage, isWaitingForResponse] = useMessages(profileResponses);
+    const [messages, addUserMessage, isWaitingForResponse] = useMessages(profileResponses, finalProfileResponse);
 
     return (
         <View style={styles.container}>
@@ -30,7 +30,8 @@ export default function Chat({ profileResponses }) {
 }
 
 Chat.propTypes = {
-    profileResponses: PropTypes.arrayOf(PropTypes.string).isRequired
+    profileResponses: PropTypes.arrayOf(PropTypes.string).isRequired,
+    finalProfileResponse: PropTypes.string,
 }
 
 const styles = StyleSheet.create({

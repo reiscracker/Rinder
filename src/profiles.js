@@ -3,7 +3,8 @@ export default [
         name: "Steak",
         tags: ["zart", "blutig", "roh"],
         image: require("../assets/profiles/steak.jpg"),
-        responses: ["Ich sag dir gleich, ich bin nicht billig!", "Kannst du dir vorstellen, wie ich mit ein bisschen grobem Salz und etwas Butter schmecke?", "Ich bin so zart, dass ich auf deiner Gabel zerfalle 🤤"]
+        responses: ["Ich sag dir gleich, ich bin nicht billig!", "Kannst du dir vorstellen, wie ich mit ein bisschen grobem Salz und etwas Butter schmecke?", "Ich bin so zart, dass ich auf deiner Gabel zerfalle 🤤"],
+        finalResponse: "Ciao"
     },
     {
         name: "Braten",
