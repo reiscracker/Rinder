@@ -71,7 +71,7 @@ export default function Cards({ onMatch }) {
     const nextCardOpacity = position.x.interpolate({
         inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
         outputRange: [0.5, 0, 0.5],
-        extrapolate: "clamp",
+        extrapolate: "extend",
     });
     const nextCardScale = position.x.interpolate({
         inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
@@ -132,18 +132,15 @@ const styles = StyleSheet.create({
         transform: [{ rotate: "30deg" }],
     },
     stampText: {
-        // borderWidth: 3,
         fontSize: 120,
         fontWeight: "900",
         padding: 10,
     },
     leftStampText: {
         color: "green",
-        // borderColor: "green",
     },
     rightStampText: {
         color: "red",
-        // borderColor: "red",
     },
     itsAMatch: {
         position: "absolute",
