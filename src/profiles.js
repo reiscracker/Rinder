@@ -105,7 +105,7 @@ export default [
     // Gyros
     // Souvlaki
     // Bifteki
-    // Siterhoden
+    // Stierhoden
     // Lamm/Hammel
     // Schweinebauch
     // Schinken
@@ -121,7 +121,8 @@ export default [
         image: require("../assets/profiles/tofu.jpg"),
         responses: [
             { text: "Achtung, dieses Profil wurde als Fakeprofil gemeldet!", type: "warning" },
-        ]
+        ],
+        finalResponse: { text: "Der Benutzer ist jetzt offline.", type: "info" }
     },
     // Sellerieschnitzel (muss Button Fake-Profil melden)
     // Kotelett

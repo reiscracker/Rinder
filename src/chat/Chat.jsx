@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import useMessages from "./useMessages";
 import ChatBubble from "./ChatBubble";
-import Warning from "./Warning";
+import SystemMessage from "./SystemMessage";
 import ChatInput from "./ChatInput";
 import TypingAnimation from "./TypingAnimation";
 import PropTypes from "prop-types";
@@ -14,11 +14,9 @@ export default function Chat({ profileResponses, finalProfileResponse }) {
     return (
         <View style={styles.container}>
             {messages.map((message, i) => {
-                if (message.type === "warning") {
+                if (message.type === "warning" || message.type === "info") {
                     return (
-                        <Warning key={i}>
-                            <Text style={styles.messageText}>{message.text}</Text>
-                        </Warning>
+                        <SystemMessage key={i} type={message.type} text={message.text} />
                     );
                 } else {
                     return (
@@ -52,5 +50,5 @@ const styles = StyleSheet.create({
     },
     messageText: {
         color: "black"
-    }
+    },
 });
