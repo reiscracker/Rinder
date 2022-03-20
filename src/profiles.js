@@ -105,7 +105,7 @@ export default [
     // Gyros
     // Souvlaki
     // Bifteki
-    // Siterhoden
+    // Stierhoden
     // Lamm/Hammel
     // Schweinebauch
     // Schinken
@@ -115,7 +115,15 @@ export default [
     // Andouille
     // Bratwurst
     // Kassler
-    // Tofu (Chatnachricht "Achtung: Dieses Rind wurde als Fakeprofil gemeldet)
+    {
+        name: "Tofu",
+        tags: ["Geschmacklos"],
+        image: require("../assets/profiles/tofu.jpg"),
+        responses: [
+            { text: "Achtung, dieses Profil wurde als Fakeprofil gemeldet!", type: "warning" },
+        ],
+        finalResponse: { text: "Der Benutzer ist jetzt offline.", type: "info" }
+    },
     // Sellerieschnitzel (muss Button Fake-Profil melden)
     // Kotelett
     {
