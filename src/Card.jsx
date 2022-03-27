@@ -2,10 +2,12 @@ import React from "react";
 import { View, StyleSheet, Image, Text } from "react-native";
 import PropTypes from "prop-types";
 
+const placeholderImage = require("../assets/profiles/placeholder.jpg");
+
 export default function Card({ imageSource, name, tags }) {
     return (
         <>
-            <Image style={styles.image} source={imageSource} />
+            <Image style={styles.image} source={imageSource || placeholderImage} />
             <Text style={styles.name}>{name}</Text>
             <View style={styles.tagContainer}>
                 {tags.map((tag, i) => <Text key={i} style={styles.tag}>{tag}</Text>)}
@@ -54,7 +56,7 @@ const styles = StyleSheet.create({
 });
 
 Card.propTypes = {
-    imageSource: PropTypes.any.isRequired,
+    imageSource: PropTypes.any,
     name: PropTypes.string.isRequired,
     tags: PropTypes.arrayOf(PropTypes.string).isRequired,
 }
