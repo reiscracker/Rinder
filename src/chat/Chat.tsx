@@ -5,22 +5,26 @@ import ChatBubble from "./ChatBubble";
 import SystemMessage from "./SystemMessage";
 import ChatInput from "./ChatInput";
 import TypingAnimation from "./TypingAnimation";
-import PropTypes from "prop-types";
+import { ProfileResponse } from "../profiles";
 
-export default function Chat({ profileResponses, finalProfileResponse }) {
+type ChatProps = {
+    profileResponses: ProfileResponse[]
+};
 
-    const [messages, addUserMessage, isWaitingForResponse] = useMessages(profileResponses, finalProfileResponse);
+export default function Chat({ profileResponses }: ChatProps) {
+
+    const [messages, addUserMessage, isWaitingForResponse] = useMessages(profileResponses);
 
     return (
         <View style={styles.container}>
             {messages.map((message, i) => {
-                if (message.type === "warning" || message.type === "info") {
-                    return (
-                        <SystemMessage key={i} type={message.type} text={message.text} />
-                    );
+                if (message.type === "system info") {
+                    return <SystemMessage key={i} type="info" text={message.text} />;
+                } else if (message.type === "system warning") {
+                    return <SystemMessage key={i} type="warning" text={message.text} />;
                 } else {
                     return (
-                        <ChatBubble key={i} sentByMe={message.sentByMe}>
+                        <ChatBubble key={i} sentByMe={message.type === "user"}>
                             <Text style={styles.messageText}>{message.text}</Text>
                         </ChatBubble>
                     );
@@ -33,14 +37,9 @@ export default function Chat({ profileResponses, finalProfileResponse }) {
                 </ChatBubble>
             )}
 
-            <ChatInput onSubmit={addUserMessage} />
+            <ChatInput isDisabled={isWaitingForResponse} onSubmit={addUserMessage} />
         </View>
     );
-}
-
-Chat.propTypes = {
-    profileResponses: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.object])).isRequired,
-    finalProfileResponse: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 }
 
 const styles = StyleSheet.create({

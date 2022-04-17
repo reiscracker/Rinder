@@ -1,24 +1,24 @@
 import React, { useRef } from "react";
 import { View, StyleSheet, TextInput } from "react-native";
-import PropTypes from "prop-types";
-import Button from "../Button";
+import { PRIMARY_COLOR } from "../constants";
 
-export default function ChatInput({ onSubmit }) {
-    const inputRef = useRef();
+export default function ChatInput({ isDisabled, onSubmit }) {
+    const inputRef = useRef(null);
 
+    const inputStyle: any = [styles.input];
+    if (isDisabled) {
+        inputStyle.push(styles.disabled);
+    }
     return (
         <View style={styles.container}>
-            <TextInput style={styles.input}
+            <TextInput style={inputStyle}
                 placeholder="Schreib etwas!"
                 onSubmitEditing={(event) => { inputRef.current.clear(); onSubmit(event.nativeEvent.text); }}
                 ref={inputRef}
+                editable={!isDisabled}
             />
         </View>
     );
-}
-
-ChatInput.propTypes = {
-    onSubmit: PropTypes.func.isRequired,
 }
 
 const styles = StyleSheet.create({
@@ -29,9 +29,13 @@ const styles = StyleSheet.create({
     input: {
         height: 40,
         borderRadius: 20,
-        borderColor: "silver",
+        borderColor: PRIMARY_COLOR,
         borderWidth: 1,
         backgroundColor: "white",
         paddingHorizontal: 10,
+    },
+    disabled: {
+        backgroundColor: "lightgray",
+        borderColor: "silver"
     }
 });
