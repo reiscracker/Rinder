@@ -1,5 +1,5 @@
 export interface ProfileResponse {
-    type: "response" | "await user message" | "system warning" | "system info";
+    type: "response" | "await user message" | "warning" | "info";
     text?: string;
 }
 
