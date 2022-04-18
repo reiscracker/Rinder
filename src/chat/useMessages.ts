@@ -10,7 +10,7 @@ type Message = {
 const MINIMUM_RESPONSE_DELAY = 1000;
 const RANDOM_RESPONSE_DELAY = 1000;
 
-const isSystemMessage = (message: Message | ProfileResponse) => message.type === "system info" || message.type === "system warning";
+export const isSystemMessage = (message: Message | ProfileResponse) => message.type === "info" || message.type === "warning";
 
 export default function useMessages(profileResponses: ProfileResponse[]): [Message[], (text: string) => void, boolean] {
     const remainingResponses = useRef([...profileResponses].reverse());

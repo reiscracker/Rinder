@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import useMessages from "./useMessages";
+import useMessages, { isSystemMessage } from "./useMessages";
 import ChatBubble from "./ChatBubble";
 import SystemMessage from "./SystemMessage";
 import ChatInput from "./ChatInput";
@@ -18,10 +18,8 @@ export default function Chat({ profileResponses }: ChatProps) {
     return (
         <View style={styles.container}>
             {messages.map((message, i) => {
-                if (message.type === "system info") {
-                    return <SystemMessage key={i} type="info" text={message.text} />;
-                } else if (message.type === "system warning") {
-                    return <SystemMessage key={i} type="warning" text={message.text} />;
+                if (isSystemMessage(message)) {
+                    return <SystemMessage key={i} type={message.type} text={message.text} />;
                 } else {
                     return (
                         <ChatBubble key={i} sentByMe={message.type === "user"}>
