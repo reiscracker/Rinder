@@ -5,7 +5,7 @@ import ChatBubble from "./ChatBubble";
 import SystemMessage from "./SystemMessage";
 import ChatInput from "./ChatInput";
 import TypingAnimation from "./TypingAnimation";
-import { ProfileResponse } from "../profiles";
+import { ProfileResponse } from "../profilesData";
 
 type ChatProps = {
     profileResponses: ProfileResponse[]

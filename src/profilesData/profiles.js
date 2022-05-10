@@ -33,7 +33,8 @@ export default [
     {
         name: "Merguez",
         tags: ["würzig", "scharf"],
-        image: require("../../assets/profiles/merguez.jpg"),// https://commons.wikimedia.org/wiki/File:Merguez_grilled.jpg
+        image: require("../../assets/profiles/merguez.jpg"),
+        imageAuthor: "Image from https://commons.wikimedia.org/wiki/File:Merguez_grilled.jpg",
         responses: [
             { type: "response", text: "Olé, Lust auf was exotisches?" },
             { type: "await user message" },

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { pickRandom } from "../helpers";
-import { ProfileResponse } from "../profiles";
+import { ProfileResponse } from "../profilesData";
 
 type Message = {
     type: Exclude<ProfileResponse["type"], "await user message"> | "user",

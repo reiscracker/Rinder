@@ -3,7 +3,7 @@ import React, { useRef } from "react";
 import { Animated, PanResponder, StyleSheet, Text, useWindowDimensions, View } from "react-native";
 import Card from "./Card";
 import EndCard from "./EndCard";
-import { useProfiles } from "./profiles";
+import { useProfiles } from "./profilesData";
 import useRandomEvent from "./useRandomEvent";
 
 

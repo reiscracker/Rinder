@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Cards from './src/Cards';
 import ItsAMatch from "./src/ItsAMatch";
 import Chat from "./src/chat/Chat";
+import ProfileComponent from "./src/profile/Profile";
 
 const Stack = createNativeStackNavigator();
 
@@ -28,9 +29,26 @@ function ChatScreen({ route }) {
   const { match } = route.params;
   return (
     <View style={styles.mainContent}>
-      <Chat profileResponses={match.responses} finalProfileResponse={match.finalResponse} />
+      <Chat profileResponses={match.responses} />
     </View>
   );
+}
+
+function ProfileScreen({ route }) {
+  const { match } = route.params;
+  return (
+    <View style={styles.mainContent}>
+      <ProfileComponent image={match.image} imageAuthor={match.imageAuthor} />
+    </View>
+  );
+}
+
+function ChatHeaderImage({ match, onPress }) {
+  return (
+    <TouchableOpacity onPress={onPress}>
+      <Image source={match.image} style={styles.roundIcon} />
+    </TouchableOpacity>
+  )
 }
 
 export default function App() {
@@ -48,10 +66,16 @@ export default function App() {
             }}
           />
           <Stack.Screen name="Chat" component={ChatScreen}
-            options={({ route }) => ({
+            options={({ route, navigation }) => ({
               title: `Chat mit ${route.params.match.name}`,
               headerTitleStyle: { fontWeight: "bold", fontSize: 24 },
-              headerRight: () => <Image source={route.params.match.image} style={styles.roundIcon} />
+              headerRight: () => <ChatHeaderImage match={route.params.match} onPress={() => navigation.navigate("Profile", { match: route.params.match })} />
+            })}
+          />
+          <Stack.Screen name="Profile" component={ProfileScreen}
+            options={({ route }) => ({
+              title: `Profil von ${route.params.match.name}`,
+              headerTitleStyle: { fontWeight: "bold", fontSize: 24 },
             })}
           />
         </Stack.Navigator>
